@@ -5,7 +5,7 @@
         <img alt="logo" class="logo" src="@/assets/img/logo.png" />
         <span class="title">{{systemName}}</span>
       </div>
-      <div class="desc">Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+      <div class="desc">智慧E校园旗下的千里寻物，打造立体化校园服务！</div>
     </div>
     <div class="login">
       <a-form @submit="onSubmit" :form="form">
@@ -63,9 +63,7 @@
         </a-form-item>
         <div>
           其他登录方式
-          <a-icon class="icon" type="alipay-circle" />
-          <a-icon class="icon" type="taobao-circle" />
-          <a-icon class="icon" type="weibo-circle" />
+          <a-icon class="icon" type="qq" />
           <router-link style="float: right" to="/dashboard/workplace" >注册账户</router-link>
         </div>
       </a-form>
