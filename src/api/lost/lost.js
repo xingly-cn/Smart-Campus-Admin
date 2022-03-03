@@ -36,7 +36,7 @@ export const editGood = (good) => {
     url: `/lost/good/edit`,
     method: 'post',
     data: {
-      good
+      ...good
     }
   })
 }
