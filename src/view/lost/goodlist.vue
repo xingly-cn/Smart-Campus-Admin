@@ -1,17 +1,21 @@
 <template>
   <div>
-    <p>TODO: 添加编辑功能，可以修改物品信息</p>
+    <div style="display: flex; justify-content: end">
+      <Button type="info" style="margin-bottom: 5px" @click="add"
+        >添加物品</Button
+      >
+    </div>
     <Table :columns="columns" :data="data">
       <template slot-scope="{ row }" slot="id">
         <Input type="text" v-model="editId" v-if="editIndex === -2" />
         <span v-else>{{ row.id }}</span>
       </template>
-      <template slot-scope="{ row }" slot="schoolid">
-        <Input type="text" v-model="editSchoolId" v-if="editIndex === -2" />
+      <template slot-scope="{ row, index }" slot="schoolid">
+        <Input type="text" v-model="editSchoolId" v-if="editIndex === index" />
         <span v-else>{{ row.schoolid }}</span>
       </template>
-      <template slot-scope="{ row }" slot="name">
-        <Input type="text" v-model="editName" v-if="editIndex === -2" />
+      <template slot-scope="{ row, index }" slot="name">
+        <Input type="text" v-model="editName" v-if="editIndex === index" />
         <span v-else>{{ row.name }}</span>
       </template>
       <template slot-scope="{ row, index }" slot="title">
@@ -34,8 +38,8 @@
         <Input type="text" v-model="editLook" v-if="editIndex === index" />
         <span v-else>{{ row.look }}</span>
       </template>
-      <template slot-scope="{ row, index }" slot="createtime">
-        <Input type="text" v-model="editCreateTime" v-if="editIndex === index" />
+      <template slot-scope="{ row }" slot="createtime">
+        <Input type="text" v-model="editCreateTime" v-if="editIndex === -2" />
         <span v-else>{{ row.createtime }}</span>
       </template>
 
@@ -46,7 +50,7 @@
         </div>
         <div v-else>
           <Button type="primary" size="small" @click="handleEdit(row, index)">操作</Button>
-          <Button type="error" size="small" @click="remove(index)">删除</Button>
+          <Button type="error" size="small" style="margin-left: 10px" @click="remove(index)">删除</Button>
         </div>
       </template>
     </Table>
@@ -54,7 +58,7 @@
 </template>
 
 <script>
-import { getGoodList, delGood, editGood } from '@/api/lost/lost'
+import { addGood, getGoodList, delGood, editGood } from '@/api/lost/lost'
 export default {
   name: 'update_paste_page',
   data () {
@@ -120,6 +124,17 @@ export default {
     }
   },
   methods: {
+    add () {
+      this.data.push({
+        name: this.editName,
+        schoolid: this.schoolid,
+        title: '',
+        content: '',
+        category: '',
+        tags: 0,
+        look: 0
+      })
+    },
     handleEdit (row, index) {
       this.editId = row.id
       this.editName = row.name
@@ -143,12 +158,22 @@ export default {
       this.data[index].look = this.editLook
       this.data[index].createtime = this.editCreateTime
       this.editIndex = -1
-      this.$Notice.success({
-        title: '更新物品成功',
-        desc: ''
-      })
+      console.log(this.editId)
+      if (this.editId === undefined) {
+        this.data[index].isDelete = 0
+        addGood(this.data[index]).then((res) => {
+          this.$Notice.success({
+            title: '添加物品成功',
+            desc: ''
+          })
+        })
+        return
+      }
       editGood(this.data[index]).then(res => {
-        console.log(res.data)
+        this.$Notice.success({
+          title: '更新物品成功',
+          desc: ''
+        })
       })
     },
     remove (index) {

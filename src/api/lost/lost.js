@@ -26,7 +26,7 @@ export const addGood = (good) => {
     url: `/lost/good/add`,
     method: 'post',
     data: {
-      good
+      ...good
     }
   })
 }
@@ -67,7 +67,7 @@ export const addCategory = (category) => {
     url: `/lost/category/add`,
     method: 'post',
     data: {
-      category
+      ...category
     }
   })
 }
@@ -77,7 +77,7 @@ export const editCategory = (category) => {
     url: `/lost/category/edit`,
     method: 'post',
     data: {
-      category
+      ...category
     }
   })
 }
